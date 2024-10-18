@@ -9,8 +9,6 @@ function convertToObject(sourceString) {
   const sourceStyle = sourceString.split(';');
   const style = {};
 
-  Object.create(style);
-
   sourceStyle.forEach((source) => {
     const data = source.split(':');
 
@@ -18,15 +16,16 @@ function convertToObject(sourceString) {
       const key = data[0].trim();
       const value = data[1];
 
-      const s = value;
-      let result;
-
-      if (!s.includes(',')) {
-        result = typeof s === 'string' ? s.replace(/[\t\n]/g, '').trim() : null;
-        style[key] = result;
+      if (value.includes(',')) {
+        style[key] =
+          typeof value === 'string'
+            ? value.replace(/[\t\n]/g, '\n').trim()
+            : null;
       } else {
         style[key] =
-          typeof s === 'string' ? s.replace(/[\t\n]/g, '\n').trim() : null;
+          typeof value === 'string'
+            ? value.replace(/[\t\n]/g, '').trim()
+            : null;
       }
     }
   });
